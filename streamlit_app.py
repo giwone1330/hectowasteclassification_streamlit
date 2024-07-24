@@ -1,8 +1,6 @@
 import streamlit as st
-from rembg import remove
 from PIL import Image, ImageOps
-from io import BytesIO
-import base64
+
 
 scinarios=[{"in1": "./asset/blank.png",
             "topk": [],
