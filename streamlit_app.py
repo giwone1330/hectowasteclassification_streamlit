@@ -57,6 +57,7 @@ scinarios=[{"in1": "./asset/blank.png",
 map = {"가방":1, "선풍기":2, None:0}
 
 st.set_page_config(layout="wide", page_title="HectoAX", initial_sidebar_state="collapsed")
+st.logo(image="http://hecto.co.kr/images/common/site-logo.svg")
 
 
 def main(idx=0):
@@ -142,7 +143,7 @@ def loadinitpage():
                 time.sleep(2)
     if option !=None:
         cls = scinario["topk"][0]["class"]
-        lr.write(f'버리실 물건은 "{cls}" (으)로 감지되었습니다.')
+        lr.success(f'**버리실 물건은 "{cls}" (으)로 감지되었습니다.**', icon="✅")
     
     # need to change to bar chart
 
@@ -173,23 +174,28 @@ def loadinitpage():
             scinario=scinarios[0]
 
     rl.image(ImageOps.exif_transpose(Image.open(scinario["in2"])))
-    rl.image("./asset/폐기물 수거1.png")
+
 
     if option !=None and option1 != None:
         with rr:
             with st.spinner('물건을 확인하는 중...'):
                 time.sleep(2)
+        rr.success(f"**데이터베이스에서 동일한 물건을 확인하였습니다.**", icon="✅")
 
     for i, search in enumerate(scinario["dbsim"]):
         if i==0:
-            rr.image(ImageOps.exif_transpose(Image.open(search["imgpath"])), caption=search["score"])
+            rr.image(ImageOps.exif_transpose(Image.open(search["imgpath"])))
+            rr.metric(label="Similarity", value=f'{search["score"]} %', delta=f'{search["score"]-85:.2f} %', label_visibility="collapsed")
             rrl, rrr = rr.columns(2)
         elif i%2!=0:
-            rrl.image(ImageOps.exif_transpose(Image.open(search["imgpath"])), caption=search["score"])
+            rrl.image(ImageOps.exif_transpose(Image.open(search["imgpath"])))
+            rrl.metric(label="Similarity", value=f'{search["score"]} %', delta=f'{search["score"]-85:.2f} %', label_visibility="collapsed")
         else:
-            rrr.image(ImageOps.exif_transpose(Image.open(search["imgpath"])), caption=search["score"])
+            rrr.image(ImageOps.exif_transpose(Image.open(search["imgpath"])))
+            rrr.metric(label="Similarity", value=f'{search["score"]} %', delta=f'{search["score"]-85:.2f} %', label_visibility="collapsed")
 
-    if option !=None and option1 !=None: rl.write(f"확인한 물건은 수거 대상 물품이 맞습니다.")
+    if option !=None and option1 !=None: rl.info(f"**확인한 물건은 수거 대상 물품이 맞습니다.**", icon="⭕")
+    rl.image("./asset/폐기물 수거1.png")
 
 
     # Custom CSS and JS
@@ -235,7 +241,7 @@ def loadinitpage():
     .keyword-item {
         display: flex;
         align-items: center;
-        margin-bottom: 10px;
+        margin-bottom: 50px;
         animation: slideIn 0.5s ease-out forwards;
         opacity: 0;
     }
@@ -259,7 +265,7 @@ def loadinitpage():
     .keyword-score {
         width: 100px;
         text-align: right;
-        font-size: 0.9em;
+        font-size: 1.8em;
         color: #666;
     }
     @keyframes slideIn {
