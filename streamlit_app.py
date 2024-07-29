@@ -57,7 +57,7 @@ scinarios=[{"in1": "./asset/blank.png",
 map = {"가방":1, "선풍기":2, None:0}
 
 st.set_page_config(layout="wide", page_title="HectoAX", initial_sidebar_state="collapsed")
-st.logo(image="http://hecto.co.kr/images/common/site-logo.svg")
+st.logo(image="./asset/site-logo.jpg")
 
 
 def main(idx=0):
