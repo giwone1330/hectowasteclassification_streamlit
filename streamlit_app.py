@@ -24,32 +24,32 @@ scinarios=[{"in1": "./asset/blank.png",
             "dbsim": [],
             "msg": ["메시지1", "메시지2"],
             },
-            {"in1": "./new_scinarios/bag_1.png",
+            {"in1": "./new2_scinarios/bag_1.png",
             "topk": [{"score": 98.97, "class": "가방"},
                      {"score": 0.34, "class": "인라인"},
                      {"score": 0.12, "class": "소형안마기"},
                      {"score": 0.12, "class": "쌀통"},
                      {"score": 0.04, "class": "카페트"},],
-            "in2": "./new_scinarios/20240531_104548.png",
-            "dbsim": [{"score": 89.49, "imgpath": "./new_scinarios/bag_1.png"},
-                      {"score": 83.01, "imgpath": "./new_scinarios/20240612_195256.png"},
-                      {"score": 80.27, "imgpath": "./new_scinarios/가방9.png"},
-                      {"score": 78.00, "imgpath": "./new_scinarios/가방_111.png"},
-                      {"score": 62.96, "imgpath": "./new_scinarios/가방_124.png"},],
+            "in2": "./new2_scinarios/20240531_104548.png",
+            "dbsim": [{"score": 89.49, "imgpath": "./new2_scinarios/bag_1.png"},
+                      {"score": 83.01, "imgpath": "./new2_scinarios/20240612_195256.png"},
+                      {"score": 80.27, "imgpath": "./new2_scinarios/가방9.png"},
+                      {"score": 78.00, "imgpath": "./new2_scinarios/가방_111.png"},
+                      {"score": 62.96, "imgpath": "./new2_scinarios/가방_124.png"},],
             "msg": ["메시지1", "메시지2"],
             },
-            {"in1": "./new_scinarios/fan_1.png",
+            {"in1": "./new2_scinarios/fan_1.png",
             "topk": [{"score": 92.97, "class": "선풍기"},
                      {"score": 2.83, "class": "환풍기"},
                      {"score": 1.85, "class": "온풍기"},
                      {"score": 0.57, "class": "공기청정기"},
                      {"score": 0.44, "class": "스탠드에어컨"},],
-            "in2": "./new_scinarios/20240723_164136.png",
-            "dbsim": [{"score": 87.79, "imgpath": "./new_scinarios/fan_1.png"},
-                      {"score": 76.93, "imgpath": "./new_scinarios/선풍기19.png"},
-                      {"score": 74.74, "imgpath": "./new_scinarios/선풍기 png.jpg"},
-                      {"score": 70.38, "imgpath": "./new_scinarios/선풍기_13.png"},
-                      {"score": 67.43, "imgpath": "./new_scinarios/선풍기(png) 19.jpg"},],
+            "in2": "./new2_scinarios/20240723_164136.png",
+            "dbsim": [{"score": 87.79, "imgpath": "./new2_scinarios/fan_1.png"},
+                      {"score": 76.93, "imgpath": "./new2_scinarios/선풍기19.png"},
+                      {"score": 74.74, "imgpath": "./new2_scinarios/선풍기 4.png"},
+                      {"score": 70.38, "imgpath": "./new2_scinarios/선풍기_13.png"},
+                      {"score": 67.43, "imgpath": "./new2_scinarios/선풍기(대형) 19.png"},],
             "msg": ["메시지1", "메시지2"],
             }
             ]
@@ -202,7 +202,7 @@ def loadinitpage():
         with rl:
             with st.spinner('물건을 확인하는 중...'):
                 time.sleep(2)
-        rl.success(f"**데이터베이스에서 동일한 물건을 확인하였습니다.**", icon="✅")
+        
 
     for i, search in enumerate(scinario["dbsim"]):
         if i==0:
@@ -268,7 +268,7 @@ def loadinitpage():
         opacity: 0;
     }
     .keyword-text {
-        width: 100px;
+        width: 120px;
         font-weight: bold;
         margin-right: 10px;
         font-size: 1.2em;
@@ -286,7 +286,7 @@ def loadinitpage():
         animation: fillBar 1s ease-out;
     }
     .keyword-score {
-        width: 100px;
+        width: 80px;
         text-align: right;
         font-size: 1.8em;
         color: #666;
