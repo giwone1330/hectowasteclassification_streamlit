@@ -202,10 +202,12 @@ def loadinitpage():
         with rl:
             with st.spinner('물건을 확인하는 중...'):
                 time.sleep(2)
+
         
 
     for i, search in enumerate(scinario["dbsim"]):
         if i==0:
+            rl.success(f"**데이터베이스에서 동일한 물건을 확인하였습니다.**", icon="✅")
             rl.image(adjust_height(ImageOps.exif_transpose(Image.open(search["imgpath"]))))
             rl.metric(label="Similarity", value=f'{search["score"]} %', delta=f'{search["score"]-85:.2f} % : 일치', label_visibility="collapsed")
             # rrl, rrr = rr.columns(2)
