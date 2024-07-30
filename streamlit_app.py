@@ -24,32 +24,32 @@ scinarios=[{"in1": "./asset/blank.png",
             "dbsim": [],
             "msg": ["메시지1", "메시지2"],
             },
-            {"in1": "./scinarios/bag_1.jpg",
+            {"in1": "./new_scinarios/bag_1.png",
             "topk": [{"score": 98.97, "class": "가방"},
                      {"score": 0.34, "class": "인라인"},
                      {"score": 0.12, "class": "소형안마기"},
                      {"score": 0.12, "class": "쌀통"},
                      {"score": 0.04, "class": "카페트"},],
-            "in2": "./scinarios/20240531_104548.jpg",
-            "dbsim": [{"score": 89.49, "imgpath": "./scinarios/bag_1.jpg"},
-                      {"score": 83.01, "imgpath": "./scinarios/20240612_195256.jpg"},
-                      {"score": 80.27, "imgpath": "./scinarios/가방9.jpg"},
-                      {"score": 78.00, "imgpath": "./scinarios/가방_111.jpg"},
-                      {"score": 62.96, "imgpath": "./scinarios/가방_124.jpeg"},],
+            "in2": "./new_scinarios/20240531_104548.png",
+            "dbsim": [{"score": 89.49, "imgpath": "./new_scinarios/bag_1.png"},
+                      {"score": 83.01, "imgpath": "./new_scinarios/20240612_195256.png"},
+                      {"score": 80.27, "imgpath": "./new_scinarios/가방9.png"},
+                      {"score": 78.00, "imgpath": "./new_scinarios/가방_111.png"},
+                      {"score": 62.96, "imgpath": "./new_scinarios/가방_124.png"},],
             "msg": ["메시지1", "메시지2"],
             },
-            {"in1": "./scinarios/fan_1.jpg",
+            {"in1": "./new_scinarios/fan_1.png",
             "topk": [{"score": 92.97, "class": "선풍기"},
                      {"score": 2.83, "class": "환풍기"},
                      {"score": 1.85, "class": "온풍기"},
                      {"score": 0.57, "class": "공기청정기"},
                      {"score": 0.44, "class": "스탠드에어컨"},],
-            "in2": "./scinarios/20240723_164136.jpg",
-            "dbsim": [{"score": 87.79, "imgpath": "./scinarios/fan_1.jpg"},
-                      {"score": 76.93, "imgpath": "./scinarios/선풍기19.jpg"},
-                      {"score": 74.74, "imgpath": "./scinarios/선풍기 4.jpg"},
-                      {"score": 70.38, "imgpath": "./scinarios/선풍기_13.jpg"},
-                      {"score": 67.43, "imgpath": "./scinarios/선풍기(대형) 19.jpg"},],
+            "in2": "./new_scinarios/20240723_164136.png",
+            "dbsim": [{"score": 87.79, "imgpath": "./new_scinarios/fan_1.png"},
+                      {"score": 76.93, "imgpath": "./new_scinarios/선풍기19.png"},
+                      {"score": 74.74, "imgpath": "./new_scinarios/선풍기 png.jpg"},
+                      {"score": 70.38, "imgpath": "./new_scinarios/선풍기_13.png"},
+                      {"score": 67.43, "imgpath": "./new_scinarios/선풍기(png) 19.jpg"},],
             "msg": ["메시지1", "메시지2"],
             }
             ]
@@ -58,6 +58,7 @@ map = {"가방":1, "선풍기":2, None:0}
 
 st.set_page_config(layout="wide", page_title="HectoAX", initial_sidebar_state="collapsed")
 st.logo(image="./asset/site-logo.jpg")
+st.title('♻ AX CycleAI')
 
 
 def main(idx=0):
@@ -77,7 +78,7 @@ def main(idx=0):
     # rl, rr = col2.columns(2)
 
     # 배출 run
-    col1.image("./asset/폐기물 배출.png")
+    # col1.image("./asset/폐기물 배출.png")
     ll.image(ImageOps.exif_transpose(Image.open(scinario["in1"])))
 
     for pred in scinario["topk"]:
@@ -87,7 +88,7 @@ def main(idx=0):
 
     # 수거 run
     rr.image(ImageOps.exif_transpose(Image.open(scinario["in2"])))
-    rr.image("./asset/폐기물 수거1.png")
+    # rr.image("./asset/폐기물 수거1.png")
     for i, search in enumerate(scinario["dbsim"]):
         if i==0:
             rl.image(ImageOps.exif_transpose(Image.open(search["imgpath"])), caption=search["score"])
@@ -96,6 +97,17 @@ def main(idx=0):
             rll.image(ImageOps.exif_transpose(Image.open(search["imgpath"])), caption=search["score"])
         else:
             rlr.image(ImageOps.exif_transpose(Image.open(search["imgpath"])), caption=search["score"])
+
+
+def adjust_height(image, set_aspect=None):
+    if set_aspect == None:
+        return image
+    width, height = image.size
+    pad = int((height/set_aspect-width)/2)
+    image = image.convert('RGBA')
+    new_image = ImageOps.expand(image, border=(pad,0,pad,10), fill=(0,0,0,0) )
+    return new_image
+
 
 
 
@@ -107,47 +119,57 @@ def loadinitpage():
 
     # UI
     # st.write("## 폐기물 분류")
-    col1, rl, rr = st.columns([2, 1, 1])
+    # col1, rl, rr = st.columns([2, 1, 1])
+    # ll, lr = col1.columns(2)
+    col1, col2 = st.columns(2)
+    col2.header("🗂️ 수거대상목록", divider=True)
     ll, lr = col1.columns(2)
-    ll.write('### 배출')
-    lr.write("### ")
-    rl.write('### 수거')
-    rr.write("### ")
+    ll.header("🗑️ 배출", divider=True)
+    lr.header("🛻 수거", divider=True)
+    rl, rrl, rrr = col2.columns([2, 1, 1])
+
+
+    # ll.write('### 배출')
+    # lr.write('### 수거')
+    # rl.write("### ")
+    # rr.write("### ")
 
     option = ll.selectbox(
     "버리실 물건의 사진을 입력해주세요.",
     ("가방", "선풍기"),
     index=None,
-    placeholder="클릭하여 선택하기",
+    placeholder="버리실 물건의 사진을 입력해주세요.",
+    label_visibility="collapsed"
     )
     idx=map[option]
     scinario=scinarios[idx]
 
 
     # 배출 run
-    col1.image("./asset/폐기물 배출.png")
-    if option !=None: ll.write("입력한 사진이 전시됩니다.")
-    ll.image(ImageOps.exif_transpose(Image.open(scinario["in1"])))
+    # col1.image("./asset/폐기물 배출.png")
+    # if option !=None: ll.write("입력한 사진이 전시됩니다.")
+    ll.image(adjust_height(ImageOps.exif_transpose(Image.open(scinario["in1"]))))
     if option !=None:
         cls = scinario["topk"][0]["class"]
-    option1 = rl.selectbox(
+    option1 = lr.selectbox(
     "확인할 물건의 사진을 입력해주세요.",
     (f"{cls} 1",),
     index=None,
-    placeholder="클릭하여 선택하기",
+    placeholder="확인할 물건의 사진을 입력해주세요.",
+    label_visibility="collapsed"
     )
 
     if option !=None and option1 == None:
-        with lr:
+        with ll:
             with st.spinner('물건을 감지하는 중...'):
                 time.sleep(2)
     if option !=None:
         cls = scinario["topk"][0]["class"]
-        lr.success(f'**버리실 물건은 "{cls}" (으)로 감지되었습니다.**', icon="✅")
+        ll.success(f'**버리실 물건은 "{cls}" (으)로 감지되었습니다.**', icon="✅")
     
     # need to change to bar chart
 
-    with lr:
+    with ll:
         if option!=None:
             colors = generate_softer_colors(len(scinario["topk"]))
             for i, (topks, color) in enumerate(zip(scinario["topk"], colors)):
@@ -173,29 +195,29 @@ def loadinitpage():
     if option1 == None:
             scinario=scinarios[0]
 
-    rl.image(ImageOps.exif_transpose(Image.open(scinario["in2"])))
+    lr.image(adjust_height(ImageOps.exif_transpose(Image.open(scinario["in2"]))))
 
 
     if option !=None and option1 != None:
-        with rr:
+        with rl:
             with st.spinner('물건을 확인하는 중...'):
                 time.sleep(2)
-        rr.success(f"**데이터베이스에서 동일한 물건을 확인하였습니다.**", icon="✅")
+        rl.success(f"**데이터베이스에서 동일한 물건을 확인하였습니다.**", icon="✅")
 
     for i, search in enumerate(scinario["dbsim"]):
         if i==0:
-            rr.image(ImageOps.exif_transpose(Image.open(search["imgpath"])))
-            rr.metric(label="Similarity", value=f'{search["score"]} %', delta=f'{search["score"]-85:.2f} %', label_visibility="collapsed")
-            rrl, rrr = rr.columns(2)
+            rl.image(adjust_height(ImageOps.exif_transpose(Image.open(search["imgpath"]))))
+            rl.metric(label="Similarity", value=f'{search["score"]} %', delta=f'{search["score"]-85:.2f} % : 일치', label_visibility="collapsed")
+            # rrl, rrr = rr.columns(2)
         elif i%2!=0:
-            rrl.image(ImageOps.exif_transpose(Image.open(search["imgpath"])))
-            rrl.metric(label="Similarity", value=f'{search["score"]} %', delta=f'{search["score"]-85:.2f} %', label_visibility="collapsed")
+            rrl.image(adjust_height(ImageOps.exif_transpose(Image.open(search["imgpath"]))))
+            rrl.metric(label="Similarity", value=f'{search["score"]} %', delta=f'{search["score"]-85:.2f} % : 불일치', label_visibility="collapsed")
         else:
-            rrr.image(ImageOps.exif_transpose(Image.open(search["imgpath"])))
-            rrr.metric(label="Similarity", value=f'{search["score"]} %', delta=f'{search["score"]-85:.2f} %', label_visibility="collapsed")
+            rrr.image(adjust_height(ImageOps.exif_transpose(Image.open(search["imgpath"]))))
+            rrr.metric(label="Similarity", value=f'{search["score"]} %', delta=f'{search["score"]-85:.2f} % : 불일치', label_visibility="collapsed")
 
-    if option !=None and option1 !=None: rl.info(f"**확인한 물건은 수거 대상 물품이 맞습니다.**", icon="⭕")
-    rl.image("./asset/폐기물 수거1.png")
+    if option !=None and option1 !=None: lr.info(f"**확인한 물건은 수거 대상 물품이 맞습니다.**", icon="⭕")
+    # rl.image("./asset/폐기물 수거1.png")
 
 
     # Custom CSS and JS
@@ -241,7 +263,7 @@ def loadinitpage():
     .keyword-item {
         display: flex;
         align-items: center;
-        margin-bottom: 50px;
+        margin-bottom: -30px;
         animation: slideIn 0.5s ease-out forwards;
         opacity: 0;
     }
@@ -249,6 +271,7 @@ def loadinitpage():
         width: 100px;
         font-weight: bold;
         margin-right: 10px;
+        font-size: 1.2em;
     }
     .importance-bar {
         flex-grow: 1;
